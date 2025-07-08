@@ -1286,10 +1286,7 @@
         <div class="controls">
           <label for="sessionSelect"><strong>Séance:</strong></label>
           <select id="sessionSelect" aria-label="Sélectionner une séance d'entraînement">
-            <option value="0">Haut du Corps (Force)</option>
-            <option value="1">Bas du Corps (Force)</option>
-            <option value="2">Haut du Corps (Hypertrophie)</option>
-            <option value="3">Bas du Corps (Hypertrophie)</option>
+            <!-- Options will be populated by JS -->
           </select>
           <button class="btn btn-outline" id="createNewSessionTypeBtn" aria-label="Créer une nouvelle séance">Nouvelle Séance</button>
           <!-- New Delete Current Session Button -->
@@ -1301,7 +1298,8 @@
         </div>
         
         <div id="exerciseListContainer" class="exercise-list-container">
-            </div>
+            <!-- Content will be populated by JS -->
+        </div>
         
         <section class="controls add-exercise-section" id="addExerciseSection">
             <div class="input-group">
@@ -1592,18 +1590,22 @@
         
         const defaultSessions=[
             {name:"Haut du Corps (Force)",exercises:[
-                { name:"Développé couché barre",rest:"2 min" },{ name:"Tractions lestées",rest:"2 min" },{ name:"Développé incliné haltères",rest:"90 sec" },{ name:"Rowing T-barre appuyé",rest:"90 sec" },{ name:"Machine élévations latérales debout",rest:"75 sec" },{ name:"Curl incliné haltères",rest:"75 sec" },{ name:"Extension triceps à la poulie haute",rest:"60 sec" }
+                { name:"Développé couché barre",rest:"120s" },{ name:"Machine élévations latérales debout",rest:"" },{ name:"Tractions",rest:"90s" },{ name:"Développé incliné haltères",rest:"" },{ name:"Rowing T-barre appuyé",rest:"90s" },{ name:"Pec Deck",rest:"" },{ name:"Curl incliné haltères",rest:"75s" },{ name:"Extension triceps à la poulie haute",rest:"" }
             ]},
             {name:"Bas du Corps (Force)",exercises:[
-                { name:"Hack squat",rest:"180 sec" },{ name:"Soulevé de terre roumain (RDL)",rest:"120 sec" },{ name:"Hip thrust (barre)",rest:"120 sec" },{ name:"Mollets debout",rest:"60 sec" }
+                { name:"Soulevé de terre roumain (RDL)",rest:"120s" },{ name:"Hip thrust",rest:"120s" },{ name:"Hack squat",rest:"180s" },{ name:"Fentes bulgares",rest:"90s" },{ name:"Mollets debout",rest:"60s" }
             ]},
             {name:"Haut du Corps (Hypertrophie)",exercises:[
-                { name:"Dips lestés",rest:"90 sec" },{ name:"Tirage vertical prise large",rest:"90 sec" },{ name:"Élévations latérales à la poulie",rest:"60 sec" },{ name:"Écarté incliné aux poulies",rest:"75 sec" },{ name:"Face Pull",rest:"75 sec" },{ name:"Curl pupitre",rest:"75 sec" },{ name:"Extension triceps overhead",rest:"75 sec" },{ name:"Curl poignets paumes haut",rest:"60 sec" },{ name:"Curl poignets inversé paumes bas",rest:"60 sec" },{ name:"Farmer’s Walk",rest:"90 sec" }
+                { name:"Dips",rest:"90s" },{ name:"Tirage vertical prise large",rest:"" },{ name:"Écarté incliné aux poulies",rest:"75s" },{ name:"Face Pull",rest:"" },{ name:"Élévations latérales à la poulie",rest:"60s" },{ name:"Curl pupitre",rest:"75s" },{ name:"Extension triceps overhead",rest:"" },{ name:"Flexions poignets supination",rest:"60s" },{ name:"Extensions de poignets pronation",rest:"" },{ name:"Farmer’s Walk",rest:"90s" },{ name:"Planche",rest:"" }
             ]},
             {name:"Bas du Corps (Hypertrophie)",exercises:[
-                { name:"Leg press",rest:"90 sec" },{ name:"Hip thrust (barre)",rest:"90 sec" },{ name:"Leg curl assis",rest:"75 sec" },{ name:"Fentes bulgares",rest:"75 sec" },{ name:"Mollets assis",rest:"60 sec" },{ name:"Circuit abdos",rest:"90 sec" }
+                { name:"Pendulum Squat",rest:"90s" },{ name:"Hip thrust",rest:"90s" },{ name:"Leg curl assis",rest:"75s" },{ name:"Mollets assis",rest:"60s" },{ name:"Relevé fessier-ischio ",rest:"60s" },{ name:"Circuit abdos )",rest:"30s" }
+            ]},
+            {name:"Trapèzes & Mobilité (Optionnel)",exercises:[
+                { name:"Barbell Shrugs",rest:"60s" },{ name:"Face Pull",rest:"60s" },{ name:"Cable Y-Raise",rest:"60s" },{ name:"Dead Hang",rest:"60s" }
             ]}
         ];
+
         // List of default session names for checking if a session can be deleted
         const defaultSessionNames = defaultSessions.map(s => s.name);
         
@@ -4140,4 +4142,3 @@ ABS rolls,Abdos couché,Abducteurs,Adducteurs,Adduction poulie jambe pliée,Arch
     </script>
 </body>
 </html>
-
