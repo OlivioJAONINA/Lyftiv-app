@@ -3,213 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Chemin corrigé pour être relatif -->
-    <link rel="manifest" href="manifest.json">
+    <title>Lyftiv - Suivi Séance Musculation</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+    
+    <!-- Manifest & Metadata -->
+    <link rel="manifest" href="manifest.json">
     <meta name="robots" content="noindex, nofollow">
-    <!-- Chemin corrigé pour être relatif -->
-    <link rel="stylesheet" href="public/css/styles.css">
-    <title>Lyftiv - Suivi Séance Musculation</title>
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="main-container">
-        <div class="theme-switcher">
-            <button id="themeToggleBtn" aria-label="Changer de thème">🌙</button>
-        </div>
-        <h2>
-            <img src="public/images/logo.png" alt="Logo Lyftiv" class="lyftiv-logo">
-            Lyftiv
-        </h2>
-        
-        <div class="controls">
-          <label for="sessionSelect"><strong>Séance:</strong></label>
-          <select id="sessionSelect" aria-label="Sélectionner une séance d'entraînement">
-            </select>
-          <button class="btn btn-outline" id="createNewSessionTypeBtn" aria-label="Créer une nouvelle séance">Nouvelle Séance</button>
-          <button class="btn btn-danger" id="deleteCurrentSessionBtn" aria-label="Supprimer la séance actuelle" title="Supprimer la séance actuelle (personnalisée)"><i class="fas fa-trash-alt"></i> Supprimer Séance</button>
-        </div>
-        
+
+        <!-- En-tête de l'application -->
+        <header class="app-header">
+            <h1>
+                <img src="public/images/logo.png" alt="Logo Lyftiv" class="lyftiv-logo">
+                Lyftiv
+            </h1>
+            <div class="theme-switcher">
+                <button id="themeToggleBtn" class="btn btn--ghost" aria-label="Changer de thème">🌙</button>
+            </div>
+        </header>
+
+        <!-- Contrôles principaux de la séance -->
+        <fieldset class="controls-fieldset">
+            <legend class="u-visually-hidden">Contrôles de la séance</legend>
+            <div class="controls">
+                <div class="form-field">
+                    <label for="sessionSelect" class="form-field__label"><strong>Séance :</strong></label>
+                    <select id="sessionSelect" class="form-field__select" aria-label="Sélectionner une séance d'entraînement"></select>
+                </div>
+                <button class="btn btn--outline" id="createNewSessionTypeBtn" aria-label="Créer une nouvelle séance">Nouvelle Séance</button>
+                <button class="btn btn--outline btn--danger" id="deleteCurrentSessionBtn" aria-label="Supprimer la séance actuelle" title="Supprimer la séance actuelle (personnalisée)">
+                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    <span>Supprimer</span>
+                </button>
+            </div>
+        </fieldset>
+
+        <!-- Barre de progression -->
         <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progressBar">
           <div class="progress-fill" id="progressFill"></div>
         </div>
         
+        <!-- Conteneur pour la liste des exercices -->
         <div id="exerciseListContainer" class="exercise-list-container">
-            </div>
+            <!-- Les exercices seront injectés ici par le JS -->
+        </div>
         
-        <section class="controls add-exercise-section" id="addExerciseSection">
-            <div class="input-group">
-                <input type="text" id="customExercise" placeholder="Ajouter un exercice" aria-label="Nom de l'exercice personnalisé">
-                <button class="btn btn-success" id="addExerciseBtn" aria-label="Ajouter l'exercice"><i class="fas fa-plus"></i> Ajouter</button>
+        <!-- Section pour ajouter un exercice -->
+        <section class="add-exercise-section" id="addExerciseSection">
+            <div class="form-field">
+                <label for="customExercise" class="u-visually-hidden">Ajouter un exercice</label>
+                <input type="text" id="customExercise" class="form-field__input" placeholder="Nom de l'exercice" aria-label="Nom de l'exercice personnalisé">
+                <div id="autocompleteSuggestions" class="u-hidden" role="listbox" aria-label="Suggestions d'exercices"></div>
             </div>
-            <div id="autocompleteSuggestions" class="hidden" role="listbox" aria-label="Suggestions d'exercices"></div>
+            <button class="btn btn--success" id="addExerciseBtn" aria-label="Ajouter l'exercice">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+                <span>Ajouter</span>
+            </button>
         </section>
 
-        <section class="summary-section">
+        <!-- Grille récapitulative -->
+        <section class="summary-grid">
             <div class="summary-card">
-                <span class="card-icon" aria-hidden="true"><i class="fas fa-weight-hanging"></i></span>
-                <h3>Tonnage Total</h3>
-                <div class="value" id="totalTonnage" aria-live="polite">0 kg</div>
+                <h3><i class="fas fa-weight-hanging" aria-hidden="true"></i> Tonnage Total</h3>
+                <div class="summary-card__value" id="totalTonnage" aria-live="polite">0 kg</div>
             </div>
             <div class="summary-card">
-                <span class="card-icon" aria-hidden="true"><i class="fas fa-chart-line"></i></span>
-                <h3>Semaine Précédente</h3>
-                <input type="text" id="previousWeek" placeholder="Tonnage Préc. (kg)" aria-label="Tonnage de la semaine précédente">
+                <h3><i class="fas fa-chart-line" aria-hidden="true"></i> Semaine Précédente</h3>
+                <div class="form-field">
+                    <label for="previousWeek" class="u-visually-hidden">Tonnage de la semaine précédente</label>
+                    <input type="text" id="previousWeek" class="form-field__input" placeholder="Tonnage Préc. (kg)" aria-label="Tonnage de la semaine précédente">
+                </div>
             </div>
             <div class="summary-card">
-                <span class="card-icon" aria-hidden="true"><i class="fas fa-arrow-up"></i></span>
-                <h3>Progression</h3>
-                <div class="value" id="delta" aria-live="polite">0 kg</div>
+                <h3><i class="fas fa-arrow-up" aria-hidden="true"></i> Progression</h3>
+                <div class="summary-card__value" id="delta" aria-live="polite">0 kg</div>
             </div>
             <div class="summary-card">
-                <span class="card-icon" aria-hidden="true"><i class="fas fa-clock"></i></span>
-                <h3>Temps Total</h3>
-                <div class="value" id="totalTime" aria-live="polite">00:00:00</div>
-                <button id="toggleWorkoutTimerBtn" class="btn btn-secondary" aria-label="Mettre en pause ou reprendre le minuteur" style="margin-top: var(--spacing-sm);">
+                <h3><i class="fas fa-clock" aria-hidden="true"></i> Temps Total</h3>
+                <div class="summary-card__value" id="totalTime" aria-live="polite">00:00:00</div>
+                <button id="toggleWorkoutTimerBtn" class="btn btn--secondary" aria-label="Mettre en pause ou reprendre le minuteur">
                     <span id="timerPlayPauseIcon" aria-hidden="true">⏯️</span>
                     <span id="timerPlayPauseText">Pause</span>
                 </button>
             </div>
         </section>
 
-        <section class="controls session-notes-section" id="sessionNotesSection">
-            <label for="sessionNotes"><strong>Notes de Séance:</strong></label>
-            <textarea id="sessionNotes" placeholder="Ajouter des notes sur la séance..." aria-label="Notes de séance"></textarea>
+        <!-- Section des notes -->
+        <section id="sessionNotesSection">
+            <div class="form-field">
+                <label for="sessionNotes" class="form-field__label"><strong>Notes de Séance :</strong></label>
+                <textarea id="sessionNotes" class="form-field__textarea" placeholder="Ajouter des notes sur la séance..." aria-label="Notes de séance"></textarea>
+            </div>
         </section>
         
-        <section class="action-buttons">
-          <button class="btn btn-success" id="finishSessionBtn" aria-label="Terminer et Sauvegarder la séance"><i class="fas fa-save" aria-hidden="true"></i> Terminer & Sauvegarder</button>
-          <button class="btn btn-primary" id="viewHistoryBtn" aria-label="Voir l'historique"><i class="fas fa-book" aria-hidden="true"></i> Historique</button>
-          <button class="btn btn-primary" id="plateCalculatorBtn" aria-label="Ouvrir les calculateurs"><i class="fas fa-calculator" aria-hidden="true"></i> Calculateurs</button>
-        </section>
-
-        <section class="action-buttons" style="margin-top: var(--spacing-md);">
-            <button class="btn btn-info" id="exportBtn" aria-label="Exporter les données"><i class="fas fa-file-export" aria-hidden="true"></i> Exporter</button>
-            <button class="btn btn-info" id="importBtn" aria-label="Importer les données"><i class="fas fa-file-import" aria-hidden="true"></i> Importer</button>
-        </section>
-        <input type="file" id="importFile" class="hidden" accept=".json,.csv" aria-label="Fichier d'importation">
+        <!-- Boutons d'action principaux -->
+        <footer class="page-footer">
+            <div class="action-buttons">
+              <button class="btn btn--success" id="finishSessionBtn" aria-label="Terminer et Sauvegarder la séance"><i class="fas fa-save" aria-hidden="true"></i> Terminer & Sauvegarder</button>
+              <button class="btn btn--primary" id="viewHistoryBtn" aria-label="Voir l'historique"><i class="fas fa-book" aria-hidden="true"></i> Historique</button>
+              <button class="btn btn--primary" id="plateCalculatorBtn" aria-label="Ouvrir les calculateurs"><i class="fas fa-calculator" aria-hidden="true"></i> Calculateurs</button>
+            </div>
+    
+            <div class="action-buttons">
+                <button class="btn btn--info" id="exportBtn" aria-label="Exporter les données"><i class="fas fa-file-export" aria-hidden="true"></i> Exporter</button>
+                <button class="btn btn--info" id="importBtn" aria-label="Importer les données"><i class="fas fa-file-import" aria-hidden="true"></i> Importer</button>
+            </div>
+        </footer>
+        <input type="file" id="importFile" class="u-hidden" accept=".json,.csv" aria-label="Fichier d'importation">
     </div>
     
+    <!-- Conteneur de notifications -->
     <div id="notification-container" aria-live="polite" aria-atomic="true"></div>
     
-    <div id="pwaInstallPrompt" class="hidden" role="dialog" aria-modal="true" aria-labelledby="pwaInstallTitle">
+    <!-- Bannière d'installation PWA -->
+    <div id="pwaInstallPrompt" class="u-hidden" role="dialog" aria-modal="true" aria-labelledby="pwaInstallTitle">
         <span id="pwaInstallTitle" style="font-weight: 600;">Ajoutez Lyftiv à votre écran d'accueil !</span>
-        <button id="installPwaBtn" aria-label="Installer l'application">Installer</button>
-        <button id="closePwaPrompt" class="close-btn" aria-label="Fermer le message d'installation">&times;</button>
+        <button id="installPwaBtn" class="btn btn--primary">Installer</button>
+        <button id="closePwaPrompt" class="btn btn--ghost" aria-label="Fermer le message d'installation">&times;</button>
     </div>
 
-    <div id="historyModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="historyModalTitle">
-      <div class="modal-content">
-          <button id="closeHistoryModal" class="modal-close-btn" aria-label="Fermer le modal historique">&times;</button>
-          <h2 id="historyModalTitle">Historique des Séances</h2>
-          <div id="historyList"></div>
-      </div>
-    </div>
-
-    <div id="newSessionModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="newSessionModalTitle">
-        <div class="modal-content">
-            <button id="closeNewSessionModal" class="modal-close-btn" aria-label="Fermer le modal de nouvelle séance">&times;</button>
-            <h2 id="newSessionModalTitle">Créer une Nouvelle Séance</h2>
-            <div class="input-group-modal">
-                <input type="text" id="newSessionNameInput" placeholder="Nom de la nouvelle séance" aria-label="Nom de la nouvelle séance">
-                <div id="newSessionNameError" class="error-message"></div>
-            </div>
-            <div style="display: flex; justify-content: center; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
-                <button class="btn btn-outline" id="cancelNewSessionBtn"><i class="fas fa-times" aria-hidden="true"></i> Annuler</button>
-                <button class="btn btn-success" id="createNewSessionBtn"><i class="fas fa-check" aria-hidden="true"></i> Créer</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="loadOptionsModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="loadOptionsModalTitle">
-      <div class="modal-content">
-          <button id="closeLoadOptionsModal" class="modal-close-btn" aria-label="Fermer le modal d'options de chargement">&times;</button>
-          <h2 id="loadOptionsModalTitle">Options de Chargement</h2>
-          <p>Comment utiliser la séance "<strong id="loadSessionName"></strong>" ?</p>
-          <div style="display: flex; justify-content: center; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
-              <button class="btn btn-primary" id="openNewSessionBtn"><i class="fas fa-folder-open" aria-hidden="true"></i> Ouvrir (remplace la séance actuelle)</button>
-              <button class="btn btn-secondary" id="appendToCurrentSessionBtn"><i class="fas fa-plus-square" aria-hidden="true"></i> Ajouter à la séance actuelle</button>
+    <!-- Modal: Historique -->
+    <div id="historyModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="historyModalTitle">
+      <div class="modal__content">
+          <div class="modal__header">
+              <h2 id="historyModalTitle" class="modal__title">Historique des Séances</h2>
+              <button id="closeHistoryModal" class="modal__close-btn btn btn--ghost" aria-label="Fermer le modal historique">&times;</button>
+          </div>
+          <div class="modal__body">
+              <div id="historyList"></div>
           </div>
       </div>
     </div>
 
-    <div id="plateCalculatorModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="plateCalcModalTitle">
-        <div class="modal-content">
-            <button id="closePlateCalculatorModal" class="modal-close-btn" aria-label="Fermer le modal du calculateur de plaques">&times;</button>
-            <div class="modal-tabs">
+    <!-- Modal: Nouvelle Séance -->
+    <div id="newSessionModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="newSessionModalTitle">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 id="newSessionModalTitle" class="modal__title">Créer une Nouvelle Séance</h2>
+                <button id="closeNewSessionModal" class="modal__close-btn btn btn--ghost" aria-label="Fermer le modal de nouvelle séance">&times;</button>
+            </div>
+            <div class="modal__body">
+                <div class="form-field">
+                    <label for="newSessionNameInput" class="u-visually-hidden">Nom de la nouvelle séance</label>
+                    <input type="text" id="newSessionNameInput" class="form-field__input" placeholder="Nom de la nouvelle séance" aria-label="Nom de la nouvelle séance">
+                    <div id="newSessionNameError" class="form-field__error-message"></div>
+                </div>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--outline" id="cancelNewSessionBtn"><i class="fas fa-times" aria-hidden="true"></i> Annuler</button>
+                <button class="btn btn--success" id="createNewSessionBtn"><i class="fas fa-check" aria-hidden="true"></i> Créer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Options de chargement -->
+    <div id="loadOptionsModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="loadOptionsModalTitle">
+      <div class="modal__content">
+          <div class="modal__header">
+              <h2 id="loadOptionsModalTitle" class="modal__title">Options de Chargement</h2>
+              <button id="closeLoadOptionsModal" class="modal__close-btn btn btn--ghost" aria-label="Fermer le modal d'options de chargement">&times;</button>
+          </div>
+          <div class="modal__body">
+              <p>Comment utiliser la séance "<strong id="loadSessionName"></strong>" ?</p>
+          </div>
+          <div class="modal__footer">
+              <button class="btn btn--primary" id="openNewSessionBtn"><i class="fas fa-folder-open" aria-hidden="true"></i> Ouvrir</button>
+              <button class="btn btn--secondary" id="appendToCurrentSessionBtn"><i class="fas fa-plus-square" aria-hidden="true"></i> Ajouter</button>
+          </div>
+      </div>
+    </div>
+
+    <!-- Modal: Calculateurs -->
+    <div id="plateCalculatorModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="plateCalcModalTitle">
+        <div class="modal__content">
+            <button id="closePlateCalculatorModal" class="modal__close-btn btn btn--ghost" aria-label="Fermer le modal du calculateur de plaques">&times;</button>
+            <div class="modal-tabs"> <!-- NOTE: Tab styles are not in the provided CSS, keeping original structure -->
                 <button class="modal-tab-btn active" id="plateCalcTab" aria-controls="plateCalcContent" role="tab" aria-selected="true">Calculateur de Plaques</button>
                 <button class="modal-tab-btn" id="goalCalcTab" aria-controls="goalCalcContent" role="tab" aria-selected="false">Objectifs d'Entraînement</button>
             </div>
             
             <div id="plateCalcContent" class="modal-tab-content" role="tabpanel" aria-labelledby="plateCalcTab">
-                <h2 id="plateCalcModalTitle">Calculateur de Plaques</h2>
-                <div class="controls">
-                    <div class="input-group-modal">
-                        <input type="number" id="targetWeightInput" min="0" placeholder="Poids cible (kg)" aria-label="Poids cible">
-                        <div id="targetWeightError" class="error-message"></div>
-                    </div>
-                    <div class="input-group-modal">
-                        <input type="number" id="barbellWeightInput" min="0" placeholder="Poids barre (kg)" aria-label="Poids de la barre">
-                        <div id="barbellWeightError" class="error-message"></div>
-                    </div>
+                <div class="modal__header">
+                    <h2 id="plateCalcModalTitle" class="modal__title">Calculateur de Plaques</h2>
                 </div>
-                <div id="platesResult" style="text-align: left; margin-top: var(--spacing-lg);"></div>
+                <div class="modal__body">
+                    <div class="form-field">
+                        <label for="targetWeightInput" class="u-visually-hidden">Poids cible (kg)</label>
+                        <input type="number" id="targetWeightInput" class="form-field__input" min="0" placeholder="Poids cible (kg)" aria-label="Poids cible">
+                        <div id="targetWeightError" class="form-field__error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="barbellWeightInput" class="u-visually-hidden">Poids barre (kg)</label>
+                        <input type="number" id="barbellWeightInput" class="form-field__input" min="0" placeholder="Poids barre (kg)" aria-label="Poids de la barre">
+                        <div id="barbellWeightError" class="form-field__error-message"></div>
+                    </div>
+                    <div id="platesResult" style="text-align: left; margin-top: var(--spacing-4);"></div>
+                </div>
             </div>
 
-            <div id="goalCalcContent" class="modal-tab-content hidden" role="tabpanel" aria-labelledby="goalCalcTab">
-                <h2>Objectifs d'Entraînement</h2>
-                <div class="controls">
-                    <div class="input-group-modal">
-                        <input type="number" id="oneRmInput" min="0" placeholder="Votre 1RM (kg)" aria-label="Votre 1RM">
-                        <div id="oneRmError" class="error-message"></div>
-                    </div>
+            <div id="goalCalcContent" class="modal-tab-content u-hidden" role="tabpanel" aria-labelledby="goalCalcTab">
+                <div class="modal__header">
+                    <h2 class="modal__title">Objectifs d'Entraînement</h2>
                 </div>
-                <div id="goalResultsContainer"></div>
+                <div class="modal__body">
+                    <div class="form-field">
+                        <label for="oneRmInput" class="u-visually-hidden">Votre 1RM (kg)</label>
+                        <input type="number" id="oneRmInput" class="form-field__input" min="0" placeholder="Votre 1RM (kg)" aria-label="Votre 1RM">
+                        <div id="oneRmError" class="form-field__error-message"></div>
+                    </div>
+                    <div id="goalResultsContainer"></div>
+                </div>
             </div>
         </div>
     </div>
     
-    <div id="quickEditModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="quickEditModalTitle">
-      <div class="modal-content">
-          <button id="closeQuickEditModal" class="modal-close-btn" aria-label="Fermer le modal d'édition rapide">&times;</button>
-          <h2 id="quickEditModalTitle">Édition Rapide</h2>
-          <p>Appliquer à toutes les séries de : <strong id="quickEditExerciseName"></strong></p>
-          <div class="controls">
-              <div class="input-group-modal">
-                  <input type="text" id="quickEditWeight" placeholder="Poids (kg)" aria-label="Poids pour édition rapide">
-                  <div id="quickEditWeightError" class="error-message"></div>
+    <!-- Modal: Édition Rapide -->
+    <div id="quickEditModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="quickEditModalTitle">
+      <div class="modal__content">
+          <div class="modal__header">
+              <h2 id="quickEditModalTitle" class="modal__title">Édition Rapide</h2>
+              <button id="closeQuickEditModal" class="modal__close-btn btn btn--ghost" aria-label="Fermer le modal d'édition rapide">&times;</button>
+          </div>
+          <div class="modal__body">
+              <p>Appliquer à toutes les séries de : <strong id="quickEditExerciseName"></strong></p>
+              <div class="form-field">
+                  <label for="quickEditWeight" class="u-visually-hidden">Poids (kg)</label>
+                  <input type="text" id="quickEditWeight" class="form-field__input" placeholder="Poids (kg)" aria-label="Poids pour édition rapide">
+                  <div id="quickEditWeightError" class="form-field__error-message"></div>
               </div>
-              <div class="input-group-modal">
-                  <input type="text" id="quickEditReps" placeholder="Reps" aria-label="Répétitions pour édition rapide">
-                  <div id="quickEditRepsError" class="error-message"></div>
+              <div class="form-field">
+                  <label for="quickEditReps" class="u-visually-hidden">Reps</label>
+                  <input type="text" id="quickEditReps" class="form-field__input" placeholder="Reps" aria-label="Répétitions pour édition rapide">
+                  <div id="quickEditRepsError" class="form-field__error-message"></div>
               </div>
           </div>
-          <button class="btn btn-success" id="applyQuickEditBtn" style="width: 100%; margin-top: var(--spacing-md);"><i class="fas fa-check-circle" aria-hidden="true"></i> Appliquer</button>
+          <div class="modal__footer">
+              <button class="btn btn--success" id="applyQuickEditBtn" style="width: 100%;"><i class="fas fa-check-circle" aria-hidden="true"></i> Appliquer</button>
+          </div>
       </div>
     </div>
 
-    <nav class="bottom-navigation">
-        <button class="btn btn-primary" id="bottomAddExerciseBtn" aria-label="Ajouter un exercice">
-            <i class="fas fa-plus-circle" aria-hidden="true"></i>
+    <!-- Navigation inférieure pour mobile -->
+    <nav class="bottom-nav">
+        <button class="bottom-nav__button" id="bottomAddExerciseBtn" aria-label="Ajouter un exercice">
+            <i class="fas fa-plus-circle bottom-nav__icon" aria-hidden="true"></i>
             <span>Exercice</span>
         </button>
-        <button class="btn btn-primary" id="bottomNotesBtn" aria-label="Notes de séance">
-            <i class="fas fa-clipboard" aria-hidden="true"></i>
+        <button class="bottom-nav__button" id="bottomNotesBtn" aria-label="Notes de séance">
+            <i class="fas fa-clipboard bottom-nav__icon" aria-hidden="true"></i>
             <span>Notes</span>
         </button>
-        <button class="btn btn-primary" id="bottomViewHistoryBtn" aria-label="Historique">
-            <i class="fas fa-history" aria-hidden="true"></i>
+        <button class="bottom-nav__button" id="bottomViewHistoryBtn" aria-label="Historique">
+            <i class="fas fa-history bottom-nav__icon" aria-hidden="true"></i>
             <span>Historique</span>
         </button>
-        <button class="btn btn-primary" id="bottomPlateCalculatorBtn" aria-label="Calculateurs">
-            <i class="fas fa-calculator" aria-hidden="true"></i>
+        <button class="bottom-nav__button" id="bottomPlateCalculatorBtn" aria-label="Calculateurs">
+            <i class="fas fa-calculator bottom-nav__icon" aria-hidden="true"></i>
             <span>Calculs</span>
         </button>
-        <button class="btn btn-primary" id="bottomFinishSessionBtn" aria-label="Terminer la séance">
-            <i class="fas fa-flag-checkered" aria-hidden="true"></i>
+        <button class="bottom-nav__button" id="bottomFinishSessionBtn" aria-label="Terminer la séance">
+            <i class="fas fa-flag-checkered bottom-nav__icon" aria-hidden="true"></i>
             <span>Terminer</span>
         </button>
     </nav>
