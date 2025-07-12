@@ -38,11 +38,11 @@ jobs:
         uses: actions/configure-pages@v5
 
       # 3. Créer l'artefact pour le déploiement
-      # MODIFICATION ICI : On indique le chemin vers le dossier /docs
+      # MODIFICATION ICI : On indique le chemin vers la racine du projet ('.')
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs'
+          path: '.'
 
       # 4. Déployer sur GitHub Pages
       # Prend l'artefact créé à l'étape précédente et le déploie.

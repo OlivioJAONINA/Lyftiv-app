@@ -5,29 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyftiv - Suivi Séance Musculation</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <!-- Manifest & Metadata -->
     <link rel="manifest" href="manifest.json">
     <meta name="robots" content="noindex, nofollow">
     
-    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="main-container">
 
-        <!-- En-tête de l'application -->
         <header class="app-header">
             <h1>
-                <img src="public/images/logo.png" alt="Logo Lyftiv" class="lyftiv-logo">
+                <img src="images/logo.png" alt="Logo Lyftiv" class="lyftiv-logo">
                 Lyftiv
             </h1>
             <div class="theme-switcher">
@@ -35,7 +30,6 @@
             </div>
         </header>
 
-        <!-- Contrôles principaux de la séance -->
         <fieldset class="controls-fieldset">
             <legend class="u-visually-hidden">Contrôles de la séance</legend>
             <div class="controls">
@@ -51,17 +45,13 @@
             </div>
         </fieldset>
 
-        <!-- Barre de progression -->
         <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progressBar">
           <div class="progress-fill" id="progressFill"></div>
         </div>
         
-        <!-- Conteneur pour la liste des exercices -->
         <div id="exerciseListContainer" class="exercise-list-container">
-            <!-- Les exercices seront injectés ici par le JS -->
-        </div>
+            </div>
         
-        <!-- Section pour ajouter un exercice -->
         <section class="add-exercise-section" id="addExerciseSection">
             <div class="form-field">
                 <label for="customExercise" class="u-visually-hidden">Ajouter un exercice</label>
@@ -74,7 +64,6 @@
             </button>
         </section>
 
-        <!-- Grille récapitulative -->
         <section class="summary-grid">
             <div class="summary-card">
                 <h3><i class="fas fa-weight-hanging" aria-hidden="true"></i> Tonnage Total</h3>
@@ -101,7 +90,6 @@
             </div>
         </section>
 
-        <!-- Section des notes -->
         <section id="sessionNotesSection">
             <div class="form-field">
                 <label for="sessionNotes" class="form-field__label"><strong>Notes de Séance :</strong></label>
@@ -109,7 +97,6 @@
             </div>
         </section>
         
-        <!-- Boutons d'action principaux -->
         <footer class="page-footer">
             <div class="action-buttons">
               <button class="btn btn--success" id="finishSessionBtn" aria-label="Terminer et Sauvegarder la séance"><i class="fas fa-save" aria-hidden="true"></i> Terminer & Sauvegarder</button>
@@ -125,17 +112,14 @@
         <input type="file" id="importFile" class="u-hidden" accept=".json,.csv" aria-label="Fichier d'importation">
     </div>
     
-    <!-- Conteneur de notifications -->
     <div id="notification-container" aria-live="polite" aria-atomic="true"></div>
     
-    <!-- Bannière d'installation PWA -->
     <div id="pwaInstallPrompt" class="u-hidden" role="dialog" aria-modal="true" aria-labelledby="pwaInstallTitle">
         <span id="pwaInstallTitle" style="font-weight: 600;">Ajoutez Lyftiv à votre écran d'accueil !</span>
         <button id="installPwaBtn" class="btn btn--primary">Installer</button>
         <button id="closePwaPrompt" class="btn btn--ghost" aria-label="Fermer le message d'installation">&times;</button>
     </div>
 
-    <!-- Modal: Historique -->
     <div id="historyModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="historyModalTitle">
       <div class="modal__content">
           <div class="modal__header">
@@ -148,7 +132,6 @@
       </div>
     </div>
 
-    <!-- Modal: Nouvelle Séance -->
     <div id="newSessionModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="newSessionModalTitle">
         <div class="modal__content">
             <div class="modal__header">
@@ -169,7 +152,6 @@
         </div>
     </div>
 
-    <!-- Modal: Options de chargement -->
     <div id="loadOptionsModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="loadOptionsModalTitle">
       <div class="modal__content">
           <div class="modal__header">
@@ -186,12 +168,10 @@
       </div>
     </div>
 
-    <!-- Modal: Calculateurs -->
     <div id="plateCalculatorModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="plateCalcModalTitle">
         <div class="modal__content">
             <button id="closePlateCalculatorModal" class="modal__close-btn btn btn--ghost" aria-label="Fermer le modal du calculateur de plaques">&times;</button>
-            <div class="modal-tabs"> <!-- NOTE: Tab styles are not in the provided CSS, keeping original structure -->
-                <button class="modal-tab-btn active" id="plateCalcTab" aria-controls="plateCalcContent" role="tab" aria-selected="true">Calculateur de Plaques</button>
+            <div class="modal-tabs"> <button class="modal-tab-btn active" id="plateCalcTab" aria-controls="plateCalcContent" role="tab" aria-selected="true">Calculateur de Plaques</button>
                 <button class="modal-tab-btn" id="goalCalcTab" aria-controls="goalCalcContent" role="tab" aria-selected="false">Objectifs d'Entraînement</button>
             </div>
             
@@ -230,7 +210,6 @@
         </div>
     </div>
     
-    <!-- Modal: Édition Rapide -->
     <div id="quickEditModal" class="modal__overlay u-hidden" role="dialog" aria-modal="true" aria-labelledby="quickEditModalTitle">
       <div class="modal__content">
           <div class="modal__header">
@@ -256,7 +235,6 @@
       </div>
     </div>
 
-    <!-- Navigation inférieure pour mobile -->
     <nav class="bottom-nav">
         <button class="bottom-nav__button" id="bottomAddExerciseBtn" aria-label="Ajouter un exercice">
             <i class="fas fa-plus-circle bottom-nav__icon" aria-hidden="true"></i>
