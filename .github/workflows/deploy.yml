@@ -18,29 +18,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # NOUVELLE ÉTAPE : Créer un dossier de déploiement propre
-      - name: Setup Build Directory
-        run: mkdir -p dist
-
-      # NOUVELLE ÉTAPE : Copier les fichiers nécessaires
-      # On copie tout ce qui est nécessaire pour que le site fonctionne
+      # ÉTAPE CORRIGÉE : On spécifie le dossier 'docs' comme source pour tous les fichiers
       - name: Copy files to Build Directory
         run: |
-          cp index.html dist/
-          cp style.css dist/
-          cp main.js dist/
-          cp manifest.json dist/
-          cp -r images dist/
-          # Ajoutez ici d'autres fichiers ou dossiers si nécessaire
+          # Crée le dossier de destination
+          mkdir -p dist
+          # Copie le contenu du dossier 'docs' dans 'dist'
+          cp -r docs/* dist/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # ÉTAPE MODIFIÉE : Uploader l'artefact depuis le dossier 'dist'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # On déploie le dossier 'dist' et non plus la racine
+          # On déploie le dossier 'dist'
           path: './dist'
 
       - name: Deploy to GitHub Pages
