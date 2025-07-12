@@ -1,51 +1,48 @@
-# Nom du workflow qui apparaîtra dans l'onglet "Actions" de GitHub
+# Nom du workflow
 name: Build and Deploy to GitHub Pages
 
-# Déclencheurs : Quand exécuter ce workflow ?
 on:
-  # Exécuter à chaque fois que du code est poussé (push) sur la branche "main"
   push:
     branches: [ "main" ]
-  # Permet également de lancer ce workflow manuellement depuis l'onglet Actions
   workflow_dispatch:
 
-# Permissions : Accès dont le workflow a besoin pour fonctionner
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Jobs : Liste des tâches à exécuter
 jobs:
-  # Nom du job (un seul job "deploy" dans notre cas)
   deploy:
-    # Spécifie que ce job ne s'exécutera pas en parallèle avec d'autres déploiements
-    concurrency:
-      group: "pages"
-      cancel-in-progress: true
-    # Type de machine virtuelle sur laquelle exécuter le job
     runs-on: ubuntu-latest
-    # Étapes (steps) à suivre pour le déploiement
     steps:
-      # 1. Récupérer le code du dépôt
-      # Utilise l'action officielle "checkout" pour télécharger le code de votre branche
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Configurer GitHub Pages
-      # Prépare l'environnement pour le déploiement sur GitHub Pages
+      # NOUVELLE ÉTAPE : Créer un dossier de déploiement propre
+      - name: Setup Build Directory
+        run: mkdir -p dist
+
+      # NOUVELLE ÉTAPE : Copier les fichiers nécessaires
+      # On copie tout ce qui est nécessaire pour que le site fonctionne
+      - name: Copy files to Build Directory
+        run: |
+          cp index.html dist/
+          cp style.css dist/
+          cp main.js dist/
+          cp manifest.json dist/
+          cp -r images dist/
+          # Ajoutez ici d'autres fichiers ou dossiers si nécessaire
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # 3. Créer l'artefact pour le déploiement
-      # MODIFICATION ICI : On indique le chemin vers la racine du projet ('.')
+      # ÉTAPE MODIFIÉE : Uploader l'artefact depuis le dossier 'dist'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          # On déploie le dossier 'dist' et non plus la racine
+          path: './dist'
 
-      # 4. Déployer sur GitHub Pages
-      # Prend l'artefact créé à l'étape précédente et le déploie.
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
