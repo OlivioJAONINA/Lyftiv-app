@@ -38,12 +38,11 @@ jobs:
         uses: actions/configure-pages@v5
 
       # 3. Créer l'artefact pour le déploiement
-      # Rassemble tous les fichiers de votre site (HTML, CSS, JS, images) dans un dossier
-      # et le prépare pour le déploiement. Le chemin "./" signifie la racine de votre projet.
+      # MODIFICATION ICI : On indique le chemin vers le dossier /docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './'
+          path: './docs'
 
       # 4. Déployer sur GitHub Pages
       # Prend l'artefact créé à l'étape précédente et le déploie.
